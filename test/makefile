@@ -1,0 +1,44 @@
+ #############################################################################
+#
+# Project Makefile
+#
+# (c) Jippe Heijnen 2019
+#
+# This file is in the public domain.
+#
+#############################################################################
+
+# source files in this project (main.cpp is automatically assumed)
+SOURCES :=
+
+# header files in this project
+HEADERS := 
+
+# other places to look for files for this project
+SEARCH  := 
+TARGET  := arduino_due
+
+SERIAL_PORT := /dev/ttyS5
+
+
+
+
+
+
+STM32_CLI := "/mnt/c/Program Files (x86)/STMicroelectronics/STM32 ST-LINK Utility/ST-LINK Utility/ST-LINK_CLI.exe"
+
+RUN_PAUSE := echo "Run Complete"
+DUE_BOOTMODE := cmd.exe /c @mode com5:1200
+
+# set RELATIVE to the next higher directory
+# and defer to the appropriate Makefile.* there
+RELATIVE := ..
+
+HWLIB             ?= $(HOME)/hwlib
+include $(HWLIB)/makefile.inc
+
+BMPTK             ?= $(HOME)/bmptk
+include $(BMPTK)/Makefile.inc
+
+debugtarget:
+	$(info    $(DEFINES))

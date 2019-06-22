@@ -1,0 +1,3 @@
+cd ~/ipass/test/;sudo make clean;sudo make build
+cmd.exe /c @mode com5:1200
+sudo bossac -p ttyS5 -U false -e -w -b main.bin -R
