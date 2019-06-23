@@ -6,15 +6,15 @@
 #                                #
 ##################################
 
-case "$OSTYPE" in
-  solaris*) echo "SOLARIS" ;;
-  darwin*)  echo "OSX" ;; 
-  linux*)   echo "LINUX" ;;
-  bsd*)     echo "BSD" ;;
-  msys*)    echo "WINDOWS" ;;
-  *)        echo "unknown: $OSTYPE" ;;
-esac
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+	echo "Linux detected, continuing";
+fi
 
 cd ~/ipass/test/;sudo make clean;sudo make build
-#cmd.exe /c @mode com5:1200
+if cat /proc/version | grep "Microsoft"; then
+	echo "!WSL DETECTED!";
+	cmd.exe /c @mode com5:1200
+else
+	echo "Not wsl, great!";
+fi
 sudo bossac -p ttyS5 -U false -e -w -b main.bin -R
