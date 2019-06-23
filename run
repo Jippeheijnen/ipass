@@ -1,3 +1,11 @@
+##################################
+#                                #
+#    Run script created by       #
+#         Jippe Heijnen          #
+#          (C) 2019              #
+#                                #
+##################################
+
 case "$OSTYPE" in
   solaris*) echo "SOLARIS" ;;
   darwin*)  echo "OSX" ;; 
