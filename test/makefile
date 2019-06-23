@@ -18,17 +18,20 @@ HEADERS :=
 SEARCH  := 
 TARGET  := arduino_due
 
-SERIAL_PORT := /dev/ttyS5
+WSL := $(cat /proc/version | grep "Microsoft")
+SERIAL_PORT := /dev/ttyACM0
 
-
-
-
-
+ifeq ($(WSL), 1)
+	DUE_BOOTMODE := cmd.exe /c @mode com5:1200
+	SERIAL_PORT := /dev/ttyS5
+else
+	DUE_BOOTMODE := sudo stty -F $(SERIAL_PORT) speed 1200 cs8 -cstopb -parenb
+endif
 
 STM32_CLI := "/mnt/c/Program Files (x86)/STMicroelectronics/STM32 ST-LINK Utility/ST-LINK Utility/ST-LINK_CLI.exe"
 
 RUN_PAUSE := echo "Run Complete"
-DUE_BOOTMODE := cmd.exe /c @mode com5:1200
+
 
 # set RELATIVE to the next higher directory
 # and defer to the appropriate Makefile.* there
