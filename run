@@ -10,7 +10,7 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
 	echo "Linux detected, continuing";
 fi
 
-cd ~/ipass/test/;sudo make clean;sudo make build
+cd ~/ipass/test/>/dev/null;sudo make clean>/dev/null;sudo make build
 if cat /proc/version | grep "Microsoft"; then
 	echo "!WSL DETECTED!";
 	cmd.exe /c @mode com5:1200
