@@ -1,3 +1,12 @@
+case "$OSTYPE" in
+  solaris*) echo "SOLARIS" ;;
+  darwin*)  echo "OSX" ;; 
+  linux*)   echo "LINUX" ;;
+  bsd*)     echo "BSD" ;;
+  msys*)    echo "WINDOWS" ;;
+  *)        echo "unknown: $OSTYPE" ;;
+esac
+
 cd ~/ipass/test/;sudo make clean;sudo make build
-cmd.exe /c @mode com5:1200
+#cmd.exe /c @mode com5:1200
 sudo bossac -p ttyS5 -U false -e -w -b main.bin -R
