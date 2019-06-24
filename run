@@ -1,3 +1,5 @@
+#! /usr/bin/env bash
+
 ##################################
 #                                #
 #     Run script created by      #
@@ -10,11 +12,13 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
 	echo "Linux detected, continuing";
 fi
 
-cd ~/ipass/test/>/dev/null;sudo make clean>/dev/null;sudo make build
+cd ~/ipass/test/iPass_test>/dev/null;sudo make clean>/dev/null;sudo make build
 if cat /proc/version | grep "Microsoft"; then
 	echo "!WSL DETECTED!";
 	cmd.exe /c @mode com5:1200
+	DEVICE=ttyS5
 else
 	echo "Not wsl, great!";
+	DEVICE=ttyACM0
 fi
-sudo bossac -p ttyS5 -U false -e -w -b main.bin -R
+sudo bossac -p $DEVICE -U false -e -w -b main.bin -R || sudo bossac -p ttyACM1 -U false -e -w -b main.bin -R

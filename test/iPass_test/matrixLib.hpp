@@ -8,31 +8,35 @@ namespace spi {
 	protected:
 		hwlib::pin_direct_from_out_t clk;
 		hwlib::pin_direct_from_out_t mosi;
-		hwlib::pin_direct_from_out_t miso;
+		hwlib::pin_direct_from_out_t cs;
+		friend class transaction;
 	public:
-		bus(hwlib::pin_out clk, hwlib::pin_out mosi, hwlib::pin_out cs):
+		bus(hwlib::target::pin_out &clk, hwlib::target::pin_out &mosi, hwlib::target::pin_out &cs):
 			clk(hwlib::pin_direct_from_out_t(clk)),
 			mosi(hwlib::pin_direct_from_out_t(mosi)),
 			cs(hwlib::pin_direct_from_out_t(cs))
 			{}
 	};
 
-	class transaction : public bus {
+	class transaction{
 	protected:
-		spi::bus &bus;
-		hwlib::pin_direct_from_out_t cs;
+		spi::bus &b;
+		hwlib::pin_direct_from_out_t &clk;
+		hwlib::pin_direct_from_out_t &mosi;
+		hwlib::pin_direct_from_out_t &cs;
+		friend class bus;
 	public:
-		transaction(spi::bus &bus, hwlib::pin_out cs) :
-			bus(bus), cs(hwlib::pin_direct_from_out_t(cs))
+		transaction(spi::bus &b) :
+			b(b), clk(b.clk), mosi(b.mosi), cs(b.cs)
 		{
 			cs.write(0);  // start of transmission
 		}
 
 		void writeData(uint8_t bits, uint16_t d) {
 			for (uint16_t bit = 1<<(bits-1); bit; bit >>= 1) {
-				wr.write(false);
-				dat.write((d & bit) ? true : false);
-				wr.write(true);
+				clk.write(0);
+				mosi.write((d & bit) ? 1 : 0);
+				clk.write(1);
 			}
 		}
 
@@ -40,7 +44,7 @@ namespace spi {
 			cs.write(1);  // end of transmission
 		}
 
-	}
+	};
 }
 
 
@@ -75,11 +79,10 @@ static constexpr const uint8_t HT1632_COMMON_16PMOS	= 0x2C;
 
 class HT_1632 {
 protected:
-	hwlib::pin_direct_from_out_t cs;
-	spi::bus bus;
+	spi::bus spi_bus;
 
 void sendCommand(uint16_t cmd){
-	writeData(12, (((uint16_t)commands::HT1632_COMMAND << 8) | cmd) << 1);
+	spi::transaction(spi_bus).writeData(12, (((uint16_t)commands::HT1632_COMMAND << 8) | cmd) << 1);
 }
 
 void writeRam(uint8_t addr, uint8_t data) {
@@ -89,7 +92,7 @@ void writeRam(uint8_t addr, uint8_t data) {
 	d |= addr & 0x7F;
 	d <<= 4;
 	d |= data & 0xF;
-	writeData(14, d);
+	spi::transaction(spi_bus).writeData(14, d);
 }
 
 
@@ -97,11 +100,9 @@ public:
 	uint16_t ledmatrix[24] = {0};
 	uint16_t type;
 
-HT_1632(spi::bus bus,
-	hwlib::pin_out cs,
+HT_1632(spi::bus spi_bus,
 	uint16_t type):
-	bus(bus),
-	cs(hwlib::pin_direct_from_out_t(cs)),
+	spi_bus(spi_bus),
 	type(type)
 	{}
 
@@ -162,29 +163,14 @@ void clearPixel(uint16_t x, uint16_t y) {
 }
 
 void writeScreen() {
-	auto spi_transaction = spi::transaction(bus, cs);
-	cs.write(false);  // start of transmission
-
-	for (uint16_t bit = 1<<2; bit; bit >>= 1) {
-		wr.write(false);
-		dat.write((commands::HT1632_WRITE & bit) ? true : false);
-		wr.write(true);
-	}
-	for (uint16_t bit = 1<<6; bit; bit >>= 1) {
-		wr.write(false);
-		dat.write((0 & bit) ? true : false);
-		wr.write(true);
-	}
+	auto spi_transaction = spi::transaction(spi_bus);
+	spi_transaction.writeData(3, commands::HT1632_WRITE);
+	spi_transaction.writeData(7,0);
+	
 	for(uint16_t i=0; i<24; i++) {
-		uint16_t data = ledmatrix[i];
-		for(uint16_t bit = 0x8000; bit; bit >>= 1) {
-			wr.write(false);
-			dat.write((data & bit) ? true : false);
-			wr.write(true);
-		}
-
+		spi_transaction.writeData(16, ledmatrix[i]);
 	}
-	cs.write(true);  // end of transmission
+	spi_transaction.~transaction();
 
 }
 

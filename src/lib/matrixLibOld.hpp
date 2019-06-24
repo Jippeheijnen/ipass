@@ -3,51 +3,6 @@
 
 #include "hwlib.hpp"
 
-namespace spi {
-	class bus {
-	protected:
-		hwlib::pin_direct_from_out_t clk;
-		hwlib::pin_direct_from_out_t mosi;
-		hwlib::pin_direct_from_out_t cs;
-		friend class transaction;
-	public:
-		bus(hwlib::target::pin_out &clk, hwlib::target::pin_out &mosi, hwlib::target::pin_out &cs):
-			clk(hwlib::pin_direct_from_out_t(clk)),
-			mosi(hwlib::pin_direct_from_out_t(mosi)),
-			cs(hwlib::pin_direct_from_out_t(cs))
-			{}
-	};
-
-	class transaction{
-	protected:
-		spi::bus &b;
-		hwlib::pin_direct_from_out_t &clk;
-		hwlib::pin_direct_from_out_t &mosi;
-		hwlib::pin_direct_from_out_t &cs;
-		friend class bus;
-	public:
-		transaction(spi::bus &b) :
-			b(b), clk(b.clk), mosi(b.mosi), cs(b.cs)
-		{
-			cs.write(0);  // start of transmission
-		}
-
-		void writeData(uint8_t bits, uint16_t d) {
-			for (uint16_t bit = 1<<(bits-1); bit; bit >>= 1) {
-				clk.write(0);
-				mosi.write((d & bit) ? 1 : 0);
-				clk.write(1);
-			}
-		}
-
-		~transaction() {
-			cs.write(1);  // end of transmission
-		}
-
-	};
-}
-
-
 namespace matrix {
 
 struct commands {
@@ -79,35 +34,51 @@ static constexpr const uint8_t HT1632_COMMON_16PMOS	= 0x2C;
 
 class HT_1632 {
 protected:
-	spi::bus spi_bus;
-
-void sendCommand(uint16_t cmd){
-	spi::transaction(spi_bus).writeData(12, (((uint16_t)commands::HT1632_COMMAND << 8) | cmd) << 1);
+	hwlib::pin_direct_from_out_t dat;
+	hwlib::pin_direct_from_out_t wr;
+	hwlib::pin_direct_from_out_t cs;
+	
+void writeData(uint8_t bits, uint16_t d) {
+	cs.write(false);  // start of transmission
+	for (uint16_t bit = 1<<(bits-1); bit; bit >>= 1) {
+		wr.write(false);
+		dat.write((d & bit) ? true : false);
+		wr.write(true);
+	}
+	cs.write(true);  // end of transmission				
 }
-
+	
+void sendCommand(uint16_t cmd){
+	writeData(12, (((uint16_t)commands::HT1632_COMMAND << 8) | cmd) << 1);
+}
+	
 void writeRam(uint8_t addr, uint8_t data) {
-
+	
 	uint16_t d = commands::HT1632_WRITE;
 	d <<= 7;
 	d |= addr & 0x7F;
 	d <<= 4;
 	d |= data & 0xF;
-	spi::transaction(spi_bus).writeData(14, d);
+	writeData(14, d);
 }
-
-
+	
+	
 public:
 	uint16_t ledmatrix[24] = {0};
 	uint16_t type;
 
-HT_1632(spi::bus spi_bus,
+HT_1632(hwlib::pin_out &dat,
+	hwlib::pin_out &wr,
+	hwlib::pin_out &cs,
 	uint16_t type):
-	spi_bus(spi_bus),
+	dat(hwlib::pin_direct_from_out_t(dat)),
+	wr(hwlib::pin_direct_from_out_t(wr)),
+	cs(hwlib::pin_direct_from_out_t(cs)),
 	type(type)
 	{}
 
 void begin() {
-
+	
 	sendCommand(commands::HT1632_SYS_EN);
 	sendCommand(commands::HT1632_LED_ON);
 	sendCommand(commands::HT1632_BLINK_OFF);
@@ -115,15 +86,15 @@ void begin() {
 	sendCommand(commands::HT1632_INT_RC);
 	sendCommand(type);
 	sendCommand(commands::HT1632_PWM_CONTROL | 0xf);
-
+	
 	for (int i=0;i<24;i++) {
 		ledmatrix[i]=0;
 	}
-
+	
 	for (int i=0; i<24*4; i++) {
 		writeRam(i, 0x00);
 	}
-
+	
 }
 
 
@@ -152,26 +123,41 @@ void setPixel(uint16_t x, uint16_t y) {
 
 	if((x < 0) || (x >= 16) || (y < 0) || (y >= 24)) return;
 	ledmatrix[y] |= 0x8000 >> x;
-
+	
 }
 
 void clearPixel(uint16_t x, uint16_t y) {
-
+	
 	if((x < 0) || (x >= 16) || (y < 0) || (y >= 24)) return;
 	ledmatrix[y] &= ~(0x8000 >> x);
-
+	
 }
 
 void writeScreen() {
-	auto spi_transaction = spi::transaction(spi_bus);
-	spi_transaction.writeData(3, commands::HT1632_WRITE);
-	spi_transaction.writeData(7,0);
 	
-	for(uint16_t i=0; i<24; i++) {
-		spi_transaction.writeData(16, ledmatrix[i]);
+	cs.write(false);  // start of transmission
+	
+	for (uint16_t bit = 1<<2; bit; bit >>= 1) {
+		wr.write(false);
+		dat.write((commands::HT1632_WRITE & bit) ? true : false);
+		wr.write(true);
 	}
-	spi_transaction.~transaction();
+	for (uint16_t bit = 1<<6; bit; bit >>= 1) {
+		wr.write(false);
+		dat.write((0 & bit) ? true : false);
+		wr.write(true);
+	}
+	for(uint16_t i=0; i<24; i++) {
+		uint16_t data = ledmatrix[i];
+		for(uint16_t bit = 0x8000; bit; bit >>= 1) {
+			wr.write(false);
+			dat.write((data & bit) ? true : false);
+			wr.write(true);
+		}
 
+	}
+	cs.write(true);  // end of transmission	
+	
 }
 
 void setBrightness(uint8_t b) {
@@ -185,19 +171,19 @@ class matrixWindow : public hwlib::window {
 private:
 	HT_1632 &matrix;
 public:
-	matrixWindow(int x, int y, HT_1632 &matrix) :
+	matrixWindow(int x, int y, HT_1632 &matrix) : 
 		hwlib::window(hwlib::xy(x,y)),
 		matrix(matrix)
 		{}
-
+	
 	void write_implementation(hwlib::xy pos, hwlib::color col) override {
 		matrix.setPixel(pos.x, pos.y);
 	}
-
+	
 	void flush() override {
 		matrix.writeScreen();
 	}
-
+	
 	void clear()  {
 		matrix.dumpMem();
 		matrix.writeScreen();

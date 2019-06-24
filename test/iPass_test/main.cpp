@@ -56,9 +56,12 @@ int main(){
 	auto dat = hwlib::target::pin_out(hwlib::target::pins::d10);
 	auto wr = hwlib::target::pin_out(hwlib::target::pins::d9);
 	auto cs = hwlib::target::pin_out(hwlib::target::pins::d8);
+	auto spi_bus = spi::bus(wr, dat, cs);
+	spi::transaction(spi_bus).writeData(8, 0b10101010);
 
-	auto m = HT_1632(dat, wr, cs, matrix::commands::HT1632_COMMON_16NMOS);
+//	auto m = HT_1632(dat, wr, cs, matrix::commands::HT1632_COMMON_16NMOS);
 
+	auto m = HT_1632(spi_bus, matrix::commands::HT1632_COMMON_16NMOS);
 	m.begin();
 	m.setBrightness(0x00);
 	hwlib::wait_ms(500);
