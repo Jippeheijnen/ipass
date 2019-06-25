@@ -17,11 +17,9 @@ if cat /proc/version | grep "Microsoft"; then
 	echo "!WSL DETECTED!";
 	cmd.exe /c @mode com5:1200
 	DEVICE=ttyS5
-	sudo bossac -p $DEVICE -U false -e -w -b main.bin -R || sudo bossac -p ttyACM1 -U false -e -w -b main.bin -R
 else
 	echo "Not wsl, great!";
+	sudo stty -F /dev/ttyACM0 speed 1200 cs8 -cstopb -parenb 
 	DEVICE=ttyACM0
-	sudo stty -F /dev/$DEVICE speed 1200 cs8 -cstopb -parenb || sudo stty -F /dev/ttyACM1 speed 1200 cs8 -cstopb -parenb 
-	sudo bossac -p $DEVICE -U false -e -w -v -b main.bin -R || sudo bossac -p ttyACM1 -U false -e -w -v -b main.bin -R
 fi
-
+sudo bossac -p $DEVICE -U false -e -w -b main.bin -R || sudo bossac -p ttyACM1 -U false -e -w -b main.bin -R

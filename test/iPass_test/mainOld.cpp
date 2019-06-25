@@ -37,7 +37,7 @@ hwlib::ostream & operator<<( hwlib::ostream & lhs, const drawable & rhs ){
 }
 
 bool within( int x, int a, int b ){
-   return ( x >= a ) && ( x <= b );
+   return ( x = a+1 ) && ( x = b+1 );
 }
 
 bool drawable::overlaps( const drawable & other ){
@@ -84,6 +84,7 @@ public:
    }
 };
 
+
 // ===========================================================================
 
 class circle : public drawable {
@@ -96,12 +97,12 @@ public:
    circle( hwlib::window & w, const hwlib::xy & midpoint, int radius, const hwlib::xy &bounce ):
       drawable( w, 
          midpoint - hwlib::xy( radius, radius ), 
-         hwlib::xy( radius, radius ) * 2, bounce ),
+         hwlib::xy( radius, radius ), bounce ),
       radius( radius )
    {}
    
    void draw() override {
-      hwlib::circle c( location + hwlib::xy( radius, radius ), radius );
+      hwlib::circle c( location, radius );
       c.draw( w );
    }
 };
@@ -118,17 +119,13 @@ public:
    ball( 
       hwlib::window & w, 
       const hwlib::xy & midpoint, 
-      int radius = 0, 
-      const hwlib::xy & speed = hwlib::xy(0,1),
-	  const hwlib::xy &bounce = hwlib::xy(1,1)
+      int radius, 
+      const hwlib::xy & speed,
+	  const hwlib::xy &bounce
    ):
       circle( w, midpoint, radius, bounce ),
       speed( speed )  
    {}
-   
-   void draw() override {
-	   w.write(hwlib::xy(location.x-1, location.y-1));
-   }
    
    void update() override {
       location = location + speed; 
@@ -157,13 +154,13 @@ public:
 		{}
 };
 
-// ===========================================================================
+// =============================================================================
 
 class wall : public rectangle {
 private:
-	int update_count = 0,
+	int update_count,
 		update_interval;
-	bool filled = false;
+	bool filled = true;
 	
 public:
 	wall(hwlib::window &w, const hwlib::xy &location, const hwlib::xy &size, int update_interval=0, hwlib::color color=hwlib::red, const hwlib::xy &bounce=hwlib::xy(0,-1)) :
@@ -172,8 +169,10 @@ public:
 		{}
 	
 	void draw() override {
-		if (filled) this->drawFilled();
-		else this->drawHollow();
+		if (filled)
+			this->drawFilled();
+		else
+			this->drawHollow();
 	}
 	
 	void update() override {
@@ -213,7 +212,16 @@ public:
 		w.flush();
 	}
 	
+//	void interact( drawable & other ) {
+//		if( this != & other){
+//			if( overlaps( other )){
+//				filled = !(filled);
+//			}
+//		}
+//	}
+	
 };
+
 
 // ===========================================================================
 // ===========================================================================
@@ -230,11 +238,11 @@ int main(){
 	auto m = HT_1632(spi_bus, matrix::commands::HT1632_COMMON_16NMOS);
 	m.begin();
 	m.setBrightness(0x00);
-	hwlib::wait_ms(500);
-	
+	hwlib::wait_ms(500);	
+
 	auto win = matrix::matrixWindow(16, 24, m);
-	auto l0 = line(win, hwlib::xy(0,4), hwlib::xy(6,10), hwlib::xy(0,0));
-	auto l1 = line(win, hwlib::xy(15,4), hwlib::xy(9,10), hwlib::xy(0,0));
+	auto l0 = line(win, hwlib::xy(0,4), hwlib::xy(7,11), hwlib::xy(0,0));
+	auto l1 = line(win, hwlib::xy(15,4), hwlib::xy(8,11), hwlib::xy(0,0));
 	auto l2 = line(win, hwlib::xy(0,19), hwlib::xy(7,12), hwlib::xy(0,0));
 	auto l3 = line(win, hwlib::xy(15,19), hwlib::xy(8,12), hwlib::xy(0,0));
 
@@ -243,45 +251,19 @@ int main(){
 	auto l02 = line(win, hwlib::xy(15,0), hwlib::xy(15,4), hwlib::xy(0,0));
 	auto l03 = line(win, hwlib::xy(15,19), hwlib::xy(15,24), hwlib::xy(0,0));
 	auto l04 = line(win, hwlib::xy(6,10), hwlib::xy(6,14), hwlib::xy(0,0));
-	auto l05 = line(win, hwlib::xy(9,10), hwlib::xy(9,14), hwlib::xy(0,1));
+	auto l05 = line(win, hwlib::xy(9,10), hwlib::xy(9,14), hwlib::xy(0,0));
 
 	auto l000 = line(win, hwlib::xy(0,0), hwlib::xy(15,0), hwlib::xy(0,0));
 	auto l001 = line(win, hwlib::xy(0,23), hwlib::xy(15,23), hwlib::xy(0,0));
-	
-	ball p0( win, hwlib::xy( 2, 3 ));
-	ball p2( win, hwlib::xy( 4, 3 ));
-	ball p4( win, hwlib::xy( 6, 3 ));
-	ball p6( win, hwlib::xy( 8, 3 ));
-	ball p8( win, hwlib::xy( 10, 3 ));
-	ball p10( win, hwlib::xy( 12, 3 ));
-	
+  
 	std::array< drawable *, 12 > objects = { &l0, &l1, &l2, &l3, &l00, &l01, &l02, &l03, &l04, &l05, &l000, &l001 };
-	std::array< drawable *, 10 > pixels = {	&p0, &p2, &p4, &p6, &p8, &p10 };
-	
 
+	ball b( win, hwlib::xy( 8, 1 ), 1, hwlib::xy( 0, 1 ), hwlib::xy(1,1) );
+	wall lijn(win, hwlib::xy(3,19), hwlib::xy(9,2));
 	
 	for (;;) {
 		for( auto & p : objects ){
 			p->draw();
-		}
-		for( auto & p : objects ){
-			p->update();
-		}
-		for( auto & p : pixels ){
-			p->draw();
-		}
-		for( auto & p : pixels ){
-			p->update();
-		}
-		for( auto & p : pixels ){
-			for( auto & other : pixels ){
-				p->interact( *other );
-			} 
-		}
-		for( auto & p : pixels ){
-			for( auto & other : objects ){
-				p->interact( *other );
-			} 
 		}
 	
 		m.writeScreen();
@@ -293,7 +275,10 @@ int main(){
 	
 		hwlib::wait_ms(100);
 		win.clear();
+		b.update();
+		b.draw();
+		lijn.draw();
 		win.flush();
 	}
-}
 
+}

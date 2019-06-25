@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Session Name="/home/jippe/ipass/test/__codelite.workspace">
+  <int Value="0" Name="m_selectedTab"/>
+  <wxString Value="/home/jippe/ipass/test/__codelite.workspace" Name="m_workspaceName"/>
+  <TabInfoArray Name="TabInfoArray">
+    <TabInfo>
+      <wxString Value="/home/jippe/ipass/test/iPass_test/main.cpp" Name="FileName"/>
+      <int Value="244" Name="FirstVisibleLine"/>
+      <int Value="271" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="/home/jippe/ipass/test/iPass_test/mainOld.cpp" Name="FileName"/>
+      <int Value="167" Name="FirstVisibleLine"/>
+      <int Value="165" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="/home/jippe/opgaven/handige code/matrixWindow" Name="FileName"/>
+      <int Value="258" Name="FirstVisibleLine"/>
+      <int Value="256" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="/home/jippe/ipass/test/iPass_test/matrixLib.hpp" Name="FileName"/>
+      <int Value="146" Name="FirstVisibleLine"/>
+      <int Value="144" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+  </TabInfoArray>
+  <SerializedObject Name="m_breakpoints">
+    <long Value="0" Name="Count"/>
+  </SerializedObject>
+</Session>

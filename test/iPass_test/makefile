@@ -19,7 +19,7 @@ SEARCH  :=
 TARGET  := arduino_due
 
 WSL := $(cat /proc/version | grep "Microsoft")
-SERIAL_PORT := /dev/ttyACM0
+SERIAL_PORT := /dev/ttyACM1
 
 ifeq ($(WSL), 1)
 	DUE_BOOTMODE := cmd.exe /c @mode com5:1200

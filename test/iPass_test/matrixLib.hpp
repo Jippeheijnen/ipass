@@ -144,7 +144,8 @@ void dumpMem() {
 		for (unsigned int i=0; i<24; i++) {
 			ledmatrix[i] = 0x00;
 		}
-		hwlib::cout << "memory cleared\n";
+		if (debug)
+			hwlib::cout << "memory cleared\n";
 	}
 }
 
