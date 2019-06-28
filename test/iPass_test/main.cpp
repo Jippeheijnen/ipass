@@ -11,7 +11,7 @@ protected:
    hwlib::window & w;
    hwlib::xy location;
    hwlib::xy size;
-   
+
 public:
 
    hwlib::xy bounce;
@@ -20,16 +20,16 @@ public:
       location( location ),
       size( size ),
 	  bounce( bounce )
-   {}      
-   
+   {}
+
    virtual void draw() = 0;
    virtual void update(){}
-   bool overlaps( const drawable & other );   
+   bool overlaps( const drawable & other );
    virtual void interact( drawable & other ){}
-   
+
    hwlib::ostream & print( hwlib::ostream & out ) const {
       return out << location << " " << ( location + size );
-   }      
+   }
 };
 
 hwlib::ostream & operator<<( hwlib::ostream & lhs, const drawable & rhs ){
@@ -41,27 +41,27 @@ bool within( int x, int a, int b ){
 }
 
 bool drawable::overlaps( const drawable & other ){
-   
-   bool x_overlap = within( 
-      location.x, 
-      other.location.x, 
+
+   bool x_overlap = within(
+      location.x,
+      other.location.x,
       other.location.x + other.size.x
-   ) || within( 
-      other.location.x, 
-      location.x, 
+   ) || within(
+      other.location.x,
+      location.x,
       location.x + size.x
    );
-     
-   bool y_overlap = within( 
-      location.y, 
-      other.location.y, 
+
+   bool y_overlap = within(
+      location.y,
+      other.location.y,
       other.location.y + other.size.y
-   ) || within( 
-      other.location.y, 
-      location.y, 
+   ) || within(
+      other.location.y,
+      location.y,
       location.y + size.y
    );
-   
+
    return x_overlap && y_overlap;
 }
 
@@ -77,7 +77,7 @@ public:
       drawable( w, location, end - location, bounce ),
       end( end )
    {}
-   
+
    void draw() override {
       hwlib::line x( location, end );
       x.draw( w );;
@@ -90,16 +90,16 @@ class circle : public drawable {
 protected:
 
    int radius;
- 
+
 public:
 
    circle( hwlib::window & w, const hwlib::xy & midpoint, int radius, const hwlib::xy &bounce ):
-      drawable( w, 
-         midpoint - hwlib::xy( radius, radius ), 
+      drawable( w,
+         midpoint - hwlib::xy( radius, radius ),
          hwlib::xy( radius, radius ) * 2, bounce ),
       radius( radius )
    {}
-   
+
    void draw() override {
       hwlib::circle c( location + hwlib::xy( radius, radius ), radius );
       c.draw( w );
@@ -112,28 +112,28 @@ class ball : public circle {
 private:
 
    hwlib::xy speed;
-   
+
 public:
 
-   ball( 
-      hwlib::window & w, 
-      const hwlib::xy & midpoint, 
-      int radius = 0, 
+   ball(
+      hwlib::window & w,
+      const hwlib::xy & midpoint,
+      int radius = 0,
       const hwlib::xy & speed = hwlib::xy(0,1),
 	  const hwlib::xy &bounce = hwlib::xy(1,1)
    ):
       circle( w, midpoint, radius, bounce ),
-      speed( speed )  
+      speed( speed )
    {}
-   
+
    void draw() override {
 	   w.write(hwlib::xy(location.x-1, location.y-1));
    }
-   
+
    void update() override {
-      location = location + speed; 
+      location = location + speed;
    }
-   
+
    void interact( drawable & other ) override {
       if( this != & other){
          if( overlaps( other )){
@@ -141,7 +141,7 @@ public:
             speed.y *= other.bounce.y;
          }
       }
-   }   
+   }
 };
 
 // ===========================================================================
@@ -149,7 +149,7 @@ public:
 class rectangle : public drawable {
 protected:
 	hwlib::color color;
-	
+
 public:
 	rectangle(hwlib::window &w, const hwlib::xy &location, const hwlib::xy &size, hwlib::color color, const hwlib::xy &bounce) :
 		drawable(w, location, size, bounce),
@@ -164,27 +164,27 @@ private:
 	int update_count = 0,
 		update_interval;
 	bool filled = false;
-	
+
 public:
 	wall(hwlib::window &w, const hwlib::xy &location, const hwlib::xy &size, int update_interval=0, hwlib::color color=hwlib::red, const hwlib::xy &bounce=hwlib::xy(0,-1)) :
 		rectangle(w, location, size, color, bounce),
 		update_interval(update_interval)
 		{}
-	
+
 	void draw() override {
 		if (filled) this->drawFilled();
 		else this->drawHollow();
 	}
-	
+
 	void update() override {
 		update_count++;
 		if (update_count==update_interval) {
 			filled = !(filled);
 			update_count=0;
 		}
-		
+
 	}
-	
+
 	void drawHollow() {
 		for(int i = location.x; i <= (location.x + size.x); i++){
             for(int j = location.y; j <= (location.y + size.y); j++){
@@ -198,7 +198,7 @@ public:
 		}
 		w.flush();
 	}
-	
+
 	void drawFilled() {
 		for(int i = location.x; i <= (location.x + size.x); i++){
             for(int j = location.y; j <= (location.y + size.y); j++){
@@ -212,7 +212,7 @@ public:
 		}
 		w.flush();
 	}
-	
+
 };
 
 // ===========================================================================
@@ -231,7 +231,7 @@ int main(){
 	m.begin();
 	m.setBrightness(0x00);
 	hwlib::wait_ms(500);
-	
+
 	auto win = matrix::matrixWindow(16, 24, m);
 	auto l0 = line(win, hwlib::xy(0,4), hwlib::xy(6,10), hwlib::xy(0,0));
 	auto l1 = line(win, hwlib::xy(15,4), hwlib::xy(9,10), hwlib::xy(0,0));
@@ -247,19 +247,11 @@ int main(){
 
 	auto l000 = line(win, hwlib::xy(0,0), hwlib::xy(15,0), hwlib::xy(0,0));
 	auto l001 = line(win, hwlib::xy(0,23), hwlib::xy(15,23), hwlib::xy(0,0));
-	
-	ball p0( win, hwlib::xy( 2, 3 ));
-	ball p2( win, hwlib::xy( 4, 3 ));
-	ball p4( win, hwlib::xy( 6, 3 ));
-	ball p6( win, hwlib::xy( 8, 3 ));
-	ball p8( win, hwlib::xy( 10, 3 ));
-	ball p10( win, hwlib::xy( 12, 3 ));
-	
-	std::array< drawable *, 12 > objects = { &l0, &l1, &l2, &l3, &l00, &l01, &l02, &l03, &l04, &l05, &l000, &l001 };
-	std::array< drawable *, 10 > pixels = {	&p0, &p2, &p4, &p6, &p8, &p10 };
-	
 
-	
+	std::array< drawable *, 18 > objects = { &l0, &l1, &l2, &l3, &l00, &l01, &l02, &l03, &l04, &l05, &l000, &l001 };
+
+
+
 	for (;;) {
 		for( auto & p : objects ){
 			p->draw();
@@ -267,33 +259,21 @@ int main(){
 		for( auto & p : objects ){
 			p->update();
 		}
-		for( auto & p : pixels ){
-			p->draw();
-		}
-		for( auto & p : pixels ){
-			p->update();
-		}
-		for( auto & p : pixels ){
-			for( auto & other : pixels ){
-				p->interact( *other );
-			} 
-		}
-		for( auto & p : pixels ){
+		for( auto & p : objects ){
 			for( auto & other : objects ){
 				p->interact( *other );
-			} 
+			}
 		}
-	
+
 		m.writeScreen();
 		m.clearPixel(0,0);
 		m.clearPixel(15,0);
 		m.clearPixel(0,23);
 		m.clearPixel(15,23);
 		m.writeScreen();
-	
+
 		hwlib::wait_ms(100);
 		win.clear();
 		win.flush();
 	}
 }
-

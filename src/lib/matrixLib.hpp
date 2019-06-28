@@ -1,9 +1,30 @@
 #ifndef MATRIXLIB
 #define MATRIXLIB
 
+
+/*!	\file matrixLib.hpp
+		\brief This file contains SPI and Library classes.
+
+		For my iPass project, the SPI implementation from hwlib wasn't enough.
+		I had to make my own because not all features were supported in hwlib.
+		Regarding my idea for this project, I have created a library which suoports
+		a matrix of LEDs with a size of 24x16, controlled by a HT1632 chip.
+*/
+
 #include "hwlib.hpp"
 
 namespace spi {
+
+	/*!
+		\addtogroup spi
+		@{
+	*/
+
+	//! SPI bus class.
+	/*!
+		This class stores the clk mosi and cs pins.
+	*/
+
 	class bus {
 	protected:
 		hwlib::pin_direct_from_out_t clk;
@@ -11,6 +32,14 @@ namespace spi {
 		hwlib::pin_direct_from_out_t cs;
 		friend class transaction;
 	public:
+		//! The bus constructor.
+		/*!
+			This is the constructor for the spi bus class.
+			All params should contain hwlib::target::pin_out's.
+			\param clk This is the (write) clock pin.
+			\param mosi This is the mosi (data) pin.
+			\param cs This is the cs pin.
+		*/
 		bus(hwlib::target::pin_out &clk, hwlib::target::pin_out &mosi, hwlib::target::pin_out &cs):
 			clk(hwlib::pin_direct_from_out_t(clk)),
 			mosi(hwlib::pin_direct_from_out_t(mosi)),
@@ -18,6 +47,11 @@ namespace spi {
 			{}
 	};
 
+	//! SPI transaction class.
+	/*!
+		This class is called upon every time something needs to be written to the
+		HT_1632 chip. Unlike hwlib this class doesn't need a cs pin.
+	*/
 	class transaction{
 	protected:
 		spi::bus &b;
@@ -45,10 +79,18 @@ namespace spi {
 		}
 
 	};
-}
+
+	/*! @} End of Doxygen Groups*/
+
+}  // End namespace spi
 
 
 namespace matrix {
+
+	/*!
+		\addtogroup matrix
+		@{
+	*/
 
 struct commands {
 
@@ -166,7 +208,7 @@ void writeScreen() {
 	auto spi_transaction = spi::transaction(spi_bus);
 	spi_transaction.writeData(3, commands::HT1632_WRITE);
 	spi_transaction.writeData(7,0);
-	
+
 	for(uint16_t i=0; i<24; i++) {
 		spi_transaction.writeData(16, ledmatrix[i]);
 	}
@@ -204,6 +246,9 @@ public:
 	}
 
 };
-};
+
+	/*! @} End of Doxygen Groups*/
+
+}  // end of namespace matrix
 
 #endif  // MATRIXLIB
