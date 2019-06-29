@@ -32,6 +32,7 @@
     <File Name="main.cpp"/>
     <File Name="mainOld.cpp"/>
     <File Name="matrixLib.hpp"/>
+    <File Name="matrixLib.cpp"/>
     <File Name="Makefile"/>
   </VirtualDirectory>
   <Settings Type="Dynamic Library">

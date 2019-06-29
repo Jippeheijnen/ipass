@@ -9,7 +9,7 @@
 #############################################################################
 
 # source files in this project (main.cpp is automatically assumed)
-SOURCES :=
+SOURCES := matrixLib.cpp
 
 # header files in this project
 HEADERS := 
@@ -19,7 +19,7 @@ SEARCH  :=
 TARGET  := arduino_due
 
 WSL := $(cat /proc/version | grep "Microsoft")
-SERIAL_PORT := /dev/ttyACM1
+SERIAL_PORT := /dev/ttyACM0
 
 ifeq ($(WSL), 1)
 	DUE_BOOTMODE := cmd.exe /c @mode com5:1200
