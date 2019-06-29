@@ -31,6 +31,9 @@
 *.out
 *.app
 
-# Make files
+# random
+/test
+/run.save
+/doxyfile
 /src/main/makefile
 /doxy
