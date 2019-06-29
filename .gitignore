@@ -32,4 +32,5 @@
 *.app
 
 # Make files
-./src/main/makefile
+/src/main/makefile
+/doxy
