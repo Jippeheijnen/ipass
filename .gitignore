@@ -34,6 +34,6 @@
 # random
 /test
 /run.save
-/doxyfile
+/Doxyfile
 /src/main/makefile
 /doxy
