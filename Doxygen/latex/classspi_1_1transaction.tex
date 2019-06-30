@@ -1,0 +1,90 @@
+\hypertarget{classspi_1_1transaction}{}\section{spi\+:\+:transaction Class Reference}
+\label{classspi_1_1transaction}\index{spi\+::transaction@{spi\+::transaction}}
+
+
+{\ttfamily \#include $<$spi.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classspi_1_1transaction_a036b6dc350f32eba0398d6914967cf5a}{transaction} (\hyperlink{classspi_1_1bus}{spi\+::bus} \&b)
+\begin{DoxyCompactList}\small\item\em The constructor. This is the constructor in which the CS pin is set to high. The transaction starts here. \end{DoxyCompactList}\item 
+void \hyperlink{classspi_1_1transaction_af55307deed871fb9b7e9ad13872430e0}{write\+Data} (uint8\+\_\+t bits, uint16\+\_\+t d)
+\begin{DoxyCompactList}\small\item\em Write\+Data is the function that actually sends data to the receiving chip. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classspi_1_1transaction_a26fdfc5232a23f7d7bd5d462518c4fa9}\label{classspi_1_1transaction_a26fdfc5232a23f7d7bd5d462518c4fa9}} 
+\hyperlink{classspi_1_1transaction_a26fdfc5232a23f7d7bd5d462518c4fa9}{$\sim$transaction} ()
+\begin{DoxyCompactList}\small\item\em The destructor. This is the destructor in which the CS pin is set to low. The transaction ends here. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classspi_1_1transaction_a79a1998291c7bdda36bbe6032ca435b0}\label{classspi_1_1transaction_a79a1998291c7bdda36bbe6032ca435b0}} 
+\hyperlink{classspi_1_1bus}{spi\+::bus} \& {\bfseries b}
+\item 
+\mbox{\Hypertarget{classspi_1_1transaction_a151ffe9c3e72d729f19c4c031219103c}\label{classspi_1_1transaction_a151ffe9c3e72d729f19c4c031219103c}} 
+hwlib\+::pin\+\_\+direct\+\_\+from\+\_\+out\+\_\+t \& {\bfseries clk}
+\item 
+\mbox{\Hypertarget{classspi_1_1transaction_a2a4413e78e15bac3a4c9b7b34aaf2dfb}\label{classspi_1_1transaction_a2a4413e78e15bac3a4c9b7b34aaf2dfb}} 
+hwlib\+::pin\+\_\+direct\+\_\+from\+\_\+out\+\_\+t \& {\bfseries mosi}
+\item 
+\mbox{\Hypertarget{classspi_1_1transaction_aad942ddbe449313ee48318630be51763}\label{classspi_1_1transaction_aad942ddbe449313ee48318630be51763}} 
+hwlib\+::pin\+\_\+direct\+\_\+from\+\_\+out\+\_\+t \& {\bfseries cs}
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classspi_1_1transaction_a9accf8f4a4eb84d3e49821c094916733}\label{classspi_1_1transaction_a9accf8f4a4eb84d3e49821c094916733}} 
+class {\bfseries bus}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+jippe 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+30/06/19 
+\end{DoxyDate}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classspi_1_1transaction_a036b6dc350f32eba0398d6914967cf5a}\label{classspi_1_1transaction_a036b6dc350f32eba0398d6914967cf5a}} 
+\index{spi\+::transaction@{spi\+::transaction}!transaction@{transaction}}
+\index{transaction@{transaction}!spi\+::transaction@{spi\+::transaction}}
+\subsubsection{\texorpdfstring{transaction()}{transaction()}}
+{\footnotesize\ttfamily spi\+::transaction\+::transaction (\begin{DoxyParamCaption}\item[{\hyperlink{classspi_1_1bus}{spi\+::bus} \&}]{b }\end{DoxyParamCaption})}
+
+
+
+The constructor. This is the constructor in which the CS pin is set to high. The transaction starts here. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em b} & Reference \hyperlink{classspi_1_1bus}{spi\+::bus} goes in here. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classspi_1_1transaction_af55307deed871fb9b7e9ad13872430e0}\label{classspi_1_1transaction_af55307deed871fb9b7e9ad13872430e0}} 
+\index{spi\+::transaction@{spi\+::transaction}!write\+Data@{write\+Data}}
+\index{write\+Data@{write\+Data}!spi\+::transaction@{spi\+::transaction}}
+\subsubsection{\texorpdfstring{write\+Data()}{writeData()}}
+{\footnotesize\ttfamily void spi\+::transaction\+::write\+Data (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{bits,  }\item[{uint16\+\_\+t}]{d }\end{DoxyParamCaption})}
+
+
+
+Write\+Data is the function that actually sends data to the receiving chip. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em bits} & This is a uint8\+\_\+t number that indicates how many bits are being sent. \\
+\hline
+{\em d} & The data to send, M\+S\+BT, (Most Significant Bit First). \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/lib/\hyperlink{spi_8hpp}{spi.\+hpp}\item 
+src/lib/\hyperlink{spi_8cpp}{spi.\+cpp}\end{DoxyCompactItemize}

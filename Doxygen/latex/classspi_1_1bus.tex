@@ -1,0 +1,66 @@
+\hypertarget{classspi_1_1bus}{}\section{spi\+:\+:bus Class Reference}
+\label{classspi_1_1bus}\index{spi\+::bus@{spi\+::bus}}
+
+
+{\ttfamily \#include $<$spi.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classspi_1_1bus_ada40cf5f65fe5e1ca031ac4fb4867ff8}{bus} (hwlib\+::target\+::pin\+\_\+out \&clk, hwlib\+::target\+::pin\+\_\+out \&mosi, hwlib\+::target\+::pin\+\_\+out \&cs)
+\begin{DoxyCompactList}\small\item\em The bus constructor. This is the constructor for the spi bus class. All params should contain hwlib\+::target\+::pin\+\_\+out\textquotesingle{}s. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classspi_1_1bus_a8658bfa99180d7816714bdf83afa26f5}\label{classspi_1_1bus_a8658bfa99180d7816714bdf83afa26f5}} 
+hwlib\+::pin\+\_\+direct\+\_\+from\+\_\+out\+\_\+t {\bfseries clk}
+\item 
+\mbox{\Hypertarget{classspi_1_1bus_a38993f8e5e6e0442d9385fd0fc95c23f}\label{classspi_1_1bus_a38993f8e5e6e0442d9385fd0fc95c23f}} 
+hwlib\+::pin\+\_\+direct\+\_\+from\+\_\+out\+\_\+t {\bfseries mosi}
+\item 
+\mbox{\Hypertarget{classspi_1_1bus_acbfc9351a99e5445a164cca2b76d3727}\label{classspi_1_1bus_acbfc9351a99e5445a164cca2b76d3727}} 
+hwlib\+::pin\+\_\+direct\+\_\+from\+\_\+out\+\_\+t {\bfseries cs}
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classspi_1_1bus_afcb110e61ed60a3170c870fc944fb3bf}\label{classspi_1_1bus_afcb110e61ed60a3170c870fc944fb3bf}} 
+class {\bfseries transaction}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+jippe 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+30/06/19 
+\end{DoxyDate}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classspi_1_1bus_ada40cf5f65fe5e1ca031ac4fb4867ff8}\label{classspi_1_1bus_ada40cf5f65fe5e1ca031ac4fb4867ff8}} 
+\index{spi\+::bus@{spi\+::bus}!bus@{bus}}
+\index{bus@{bus}!spi\+::bus@{spi\+::bus}}
+\subsubsection{\texorpdfstring{bus()}{bus()}}
+{\footnotesize\ttfamily spi\+::bus\+::bus (\begin{DoxyParamCaption}\item[{hwlib\+::target\+::pin\+\_\+out \&}]{clk,  }\item[{hwlib\+::target\+::pin\+\_\+out \&}]{mosi,  }\item[{hwlib\+::target\+::pin\+\_\+out \&}]{cs }\end{DoxyParamCaption})}
+
+
+
+The bus constructor. This is the constructor for the spi bus class. All params should contain hwlib\+::target\+::pin\+\_\+out\textquotesingle{}s. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em clk} & This is the (write) clock pin. \\
+\hline
+{\em mosi} & This is the mosi (data) pin. \\
+\hline
+{\em cs} & This is the cs pin. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/lib/\hyperlink{spi_8hpp}{spi.\+hpp}\item 
+src/lib/\hyperlink{spi_8cpp}{spi.\+cpp}\end{DoxyCompactItemize}

@@ -1,0 +1,59 @@
+\hypertarget{classmatrix_1_1_h_t__1632}{}\section{matrix\+:\+:H\+T\+\_\+1632 Class Reference}
+\label{classmatrix_1_1_h_t__1632}\index{matrix\+::\+H\+T\+\_\+1632@{matrix\+::\+H\+T\+\_\+1632}}
+
+
+{\ttfamily \#include $<$matrix\+Lib.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{group___h_t__1632_ga6f2a79fd8a1be6e44b847d8548962400}{H\+T\+\_\+1632} (\hyperlink{classspi_1_1bus}{spi\+::bus} spi\+\_\+bus, uint16\+\_\+t type)
+\begin{DoxyCompactList}\small\item\em The constructor. This is the constructor of my library,. \end{DoxyCompactList}\item 
+void \hyperlink{group___h_t__1632_ga41e8cf0207f395b420124b73555abea1}{set\+Pixel} (uint16\+\_\+t x, uint16\+\_\+t y)
+\begin{DoxyCompactList}\small\item\em Set\+Pixel function. The set\+Pixel function is quite self-\/explanatory, it sets pixels at location x, y. \end{DoxyCompactList}\item 
+void \hyperlink{group___h_t__1632_ga51370333005f486fb0d2877fe459e596}{clear\+Pixel} (uint16\+\_\+t x, uint16\+\_\+t y)
+\begin{DoxyCompactList}\small\item\em Clear\+Pixel function. The reverse of the set\+Pixel function. \end{DoxyCompactList}\item 
+void \hyperlink{group___h_t__1632_gac1c948d2a7639d54c6cc2a0d6aee0d2f}{blink} (uint16\+\_\+t seconds)
+\begin{DoxyCompactList}\small\item\em Blink function. This function lets you blink the whole matrix for x amount of seconds. \end{DoxyCompactList}\item 
+void \hyperlink{group___h_t__1632_ga5ed82c4f2f682bcd439aa8a745f01f0f}{write\+Screen} ()
+\begin{DoxyCompactList}\small\item\em Write\+Screen function. Write\+Screen is similar to hwlib\+::window\+::flush(), what it does is send the data stored in the memory buffer to the H\+T1632 chip. What\textquotesingle{}s so special about this function is the following\+: It uses \textquotesingle{}successive writing\textquotesingle{} which is a particular way of writing data over spi. Successive writing enables you to send data far more quickly than writing per register. This is because with successive writing only the first register address is sent, after that comes only data. I first used write\+Ram to write to each register individually but this was much slower because I had to sent each address too. With successive writing that\textquotesingle{}s not required. \end{DoxyCompactList}\item 
+void \hyperlink{group___h_t__1632_ga942af7e6d95cc5d44778cb5ba2f56b36}{set\+Brightness} (uint8\+\_\+t b)
+\begin{DoxyCompactList}\small\item\em Set\+Brightness function. With the set\+Brightness function, the user can adjust the brightness of the whole matrix. This works with a P\+WM signal which is sent using the the matrix\+::\+H\+T\+\_\+1632\+\_\+\+P\+W\+M\+\_\+\+C\+O\+N\+T\+R\+OL command. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{group___h_t__1632_ga4e49c60cb79e44ba9f67d33c1986b5e6}{send\+Command} (uint16\+\_\+t cmd)
+\begin{DoxyCompactList}\small\item\em cend\+Command function. This function is quite simple, and it is only used internally in the background. It does the following\+: \end{DoxyCompactList}\item 
+void \hyperlink{group___h_t__1632_gac3d327b762c8245ddc6f88ba26c46e82}{write\+Ram} (uint8\+\_\+t addr, uint8\+\_\+t data)
+\begin{DoxyCompactList}\small\item\em Write\+Ram function. The write\+Ram function writes data to the ram register directly. How it works\+: The complete transaction has a total of 14 bits, they are arranged as following\+: \end{DoxyCompactList}\item 
+void \hyperlink{group___h_t__1632_ga7125530a962e17d9a533453e10d19e15}{dump\+Mem} ()
+\begin{DoxyCompactList}\small\item\em Dump\+Mem function. This function loops over the internal memory buffer and clears it. If the \textquotesingle{}debug\textquotesingle{} define is set to true in the header file, the function shows the previous bitvalues stored in the buffer before clearing it. If debug is left as is, no output will be generated and the memory will be cleared without confirmation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+uint16\+\_\+t \hyperlink{group___h_t__1632_gaaa0ec3078d91783cb444a6d22e365d0f}{ledmatrix} \mbox{[}24\mbox{]} = \{0\}
+\begin{DoxyCompactList}\small\item\em This array is the memory-\/buffer to store data temporarily before it gets written. \end{DoxyCompactList}\item 
+\hyperlink{classspi_1_1bus}{spi\+::bus} {\bfseries spi\+\_\+bus}
+\item 
+uint16\+\_\+t {\bfseries type}
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class {\bfseries matrix\+Window}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+jippe 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+01/07/19 
+\end{DoxyDate}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/lib/\hyperlink{matrix_lib_8hpp}{matrix\+Lib.\+hpp}\item 
+src/lib/\hyperlink{matrix_lib_8cpp}{matrix\+Lib.\+cpp}\end{DoxyCompactItemize}

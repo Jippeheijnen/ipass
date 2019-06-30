@@ -1,28 +1,12 @@
 #include "matrixLib.hpp"
 
-spi::bus::bus(hwlib::target::pin_out &clk, hwlib::target::pin_out &mosi, hwlib::target::pin_out &cs) :
-	clk(hwlib::pin_direct_from_out_t(clk)),
-	mosi(hwlib::pin_direct_from_out_t(mosi)),
-	cs(hwlib::pin_direct_from_out_t(cs))
-	{}
+/*!
+	\author jippe
+	\date 01/07/19
+	\file matrixLib.cpp
+ */
 
-spi::transaction::transaction(spi::bus &b) :
-	b(b), clk(b.clk), mosi(b.mosi), cs(b.cs)
-	{
-	cs.write(0);  // start of transmission
-	}
 
-void spi::transaction::writeData(uint8_t bits, uint16_t d) {
-	for (uint16_t bit = 1<<(bits-1); bit; bit >>= 1) {
-		clk.write(0);
-		mosi.write((d & bit) ? 1 : 0);
-		clk.write(1);
-	}
-}
-
-spi::transaction::~transaction() {
-	cs.write(1);  // end of transmission
-}
 
 matrix::HT_1632::HT_1632(spi::bus spi_bus,
 	uint16_t type):
@@ -74,12 +58,13 @@ void matrix::HT_1632::dumpMem() {
 			hwlib::wait_ms(5);
 		}
 		hwlib::cout << '\n';
-	} else {
 		for (unsigned int i=0; i<24; i++) {
 			ledmatrix[i] = 0x00;
 		}
-		if (debug) {
-			hwlib::cout << "memory cleared\n";
+		hwlib::cout << "memory dumped!" << '\n';
+	} else {
+		for (unsigned int i=0; i<24; i++) {
+			ledmatrix[i] = 0x00;
 		}
 	}
 }
