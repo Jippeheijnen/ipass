@@ -34,7 +34,6 @@
 # random
 /test
 /run.save
-/Doxyfile
 /src/main/makefile
 /Doxygen
 
