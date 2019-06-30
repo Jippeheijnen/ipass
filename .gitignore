@@ -36,4 +36,5 @@
 /run.save
 /Doxyfile
 /src/main/makefile
-/doxy
+/Doxygen
+
