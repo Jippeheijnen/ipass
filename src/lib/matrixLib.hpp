@@ -1,10 +1,11 @@
+
 /*
 ##############################################################
 #                 (c) Jippe Heijnen 2019                     #
 #                                                            #
-#   Distributed under the GNU General Public License v3.0.   #
-#   (See accompanying file LICENSE.txt or copy at            #
-#   https://www.gnu.org/licenses/gpl-3.0.nl.html)            #
+#   Distributed under the Boost Software License v1.0.       #
+#   (See accompanying file LICENSE_1_0.txt or copy at        #
+#          https://www.boost.org/LICENSE_1_0.txt)            #
 ##############################################################
 */
 
@@ -13,7 +14,7 @@
 
 
 /*!
-	\file matrixLib.hpp
+	\file matrixLib.cpp
 	\brief This file contains Library classes.
 	 * I have created a library which suoports a matrix of LEDs
 	 * with a size of 16x24, controlled by a HT1632 chip.
@@ -34,7 +35,6 @@ namespace matrix {
 		\class commands
 		\author jippe
 		\date 01/07/19
-		\file matrixLib.hpp
 		\brief matrix::commands
 		 * These command codes are used to initiate the matrix so that the HT1632
 		 * chip knows what it needs to do and what it's task is.
@@ -78,7 +78,6 @@ static constexpr const uint8_t HT1632_WRITE			= 0x05;
 	\class HT_1632
 	\author jippe
 	\date 01/07/19
-	\file matrixLib.hpp
 	\brief matrix::HT_1632
 	 * This is the library part of my iPass project. The matrix is 16 x 32 in size,
 	 * and it is controlled by an HT1632 chip. This chip works with spi so thats why
@@ -232,7 +231,6 @@ void setBrightness(uint8_t b);
 	\class matrixWindow
 	\author jippe
 	\date 01/07/19
-	\file matrixLib.hpp
 	\brief matrix::matrixWindow
 	 * This class is a way to use my matrices as hwlib::window's.
 	 * The cool part about this is that you can use a matrixWindow to draw hwlib::drawable's.

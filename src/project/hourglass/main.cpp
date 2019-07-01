@@ -9,7 +9,7 @@
 ##############################################################
 */
 
-#include "matrixLib.hpp"
+#include "../../lib/matrixLib.hpp"
 #include <array>
 
 using matrix::commands, matrix::HT_1632, matrix::matrixWindow;

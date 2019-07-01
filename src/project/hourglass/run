@@ -2,9 +2,9 @@
 ##############################################################
 #                 (c) Jippe Heijnen 2019                     #
 #                                                            #
-#   Distributed under the GNU General Public License v3.0.   #
-#   (See accompanying file LICENSE.txt or copy at            #
-#   https://www.gnu.org/licenses/gpl-3.0.nl.html)            #
+#   Distributed under the Boost Software License v1.0.       #
+#   (See accompanying file LICENSE_1_0.txt or copy at        #
+#          https://www.boost.org/LICENSE_1_0.txt)            #
 ##############################################################
 
 #! /usr/bin/env bash
@@ -13,16 +13,18 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
 	echo "Linux detected, continuing";
 fi
 
-cd ~/iPass/test/iPass_test>/dev/null;sudo make clean>/dev/null;sudo make build
+cd ~/iPass/src/project/hourglass/>/dev/null;make clean>/dev/null;make build
 if cat /proc/version | grep "Microsoft"; then
 	echo "!WSL DETECTED!";
 	cmd.exe /c @mode com5:1200
 	DEVICE=ttyS5
 	sudo bossac -p $DEVICE -U false -e -w -b main.bin -R || sudo bossac -p ttyACM1 -U false -e -w -b main.bin -R
+	make clean
 else
 	echo "Not wsl, great!";
 	DEVICE=ttyACM0
 	sudo stty -F /dev/$DEVICE speed 1200 cs8 -cstopb -parenb || sudo stty -F /dev/ttyACM1 speed 1200 cs8 -cstopb -parenb 
 	sudo bossac -p $DEVICE -U false -e -w -v -b main.bin -R || sudo bossac -p ttyACM1 -U false -e -w -v -b main.bin -R
+	make clean>/dev/null
 fi
 

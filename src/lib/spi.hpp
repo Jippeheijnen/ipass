@@ -3,9 +3,9 @@
 ##############################################################
 #                 (c) Jippe Heijnen 2019                     #
 #                                                            #
-#   Distributed under the GNU General Public License v3.0.   #
-#   (See accompanying file LICENSE.txt or copy at            #
-#   https://www.gnu.org/licenses/gpl-3.0.nl.html)            #
+#   Distributed under the Boost Software License v1.0.       #
+#   (See accompanying file LICENSE_1_0.txt or copy at        #
+#          https://www.boost.org/LICENSE_1_0.txt)            #
 ##############################################################
 */
 
@@ -22,7 +22,7 @@ namespace spi {
 		\class bus
 		\author jippe
 		\date 30/06/19
-		\file spi.hpp
+		\file spi.cpp
 		\brief This is my SPI bus implementation.
 		 * Other than hwlib this class uses the cs pin as well.
 		 * The MISO pin, since no reading is required, is left out.
@@ -53,7 +53,6 @@ namespace spi {
 		\class transaction
 		\author jippe
 		\date 30/06/19
-		\file spi.hpp
 		\brief SPI transaction class.
 		 * This class creates a transaction from a spi::bus.
 		 * In the constructor the CS pin is set to high,
