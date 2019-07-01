@@ -41,12 +41,12 @@ namespace spi {
 			\brief The bus constructor.
 			 * This is the constructor for the spi bus class.
 			 * All params should contain hwlib::target::pin_out's.
-			\param clk This is the (write) clock pin.
-			\param mosi This is the mosi (data) pin.
-			\param cs This is the cs pin.
+			@param clk This is the (write) clock pin.
+			@param mosi This is the mosi (data) pin.
+			@param cs This is the cs pin.
 		*/
 
-		bus(hwlib::target::pin_out &clk, hwlib::target::pin_out &mosi, hwlib::target::pin_out &cs);
+		bus(hwlib::pin_out &clk, hwlib::pin_out &mosi, hwlib::pin_out &cs);
 	};  // end of bus class.
 
 	/*!

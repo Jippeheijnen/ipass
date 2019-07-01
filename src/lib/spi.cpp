@@ -17,10 +17,10 @@
 	\file spi.cpp
  */
 
-spi::bus::bus(hwlib::target::pin_out &clk, hwlib::target::pin_out &mosi, hwlib::target::pin_out &cs) :
-	clk(hwlib::pin_direct_from_out_t(clk)),
-	mosi(hwlib::pin_direct_from_out_t(mosi)),
-	cs(hwlib::pin_direct_from_out_t(cs))
+spi::bus::bus(hwlib::pin_out &clk, hwlib::pin_out &mosi, hwlib::pin_out &cs) :
+	clk(hwlib::direct(clk)),
+	mosi(hwlib::direct(mosi)),
+	cs(hwlib::direct(cs))
 	{}
 
 spi::transaction::transaction(spi::bus &b) :
