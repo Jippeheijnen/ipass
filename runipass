@@ -1,0 +1,18 @@
+#! /usr/bin/env bash
+
+if [ "$1" == "hourglass" ]; then
+	echo "running hourglass..."
+	~/iPass/src/project/hourglass/run
+else
+	echo "Unknown executable. valid executables are hourglass, unit_test"
+fi
+if [ "$1" == "unit_test" ]; then
+	echo "running unit tests..."
+	~/iPass/src/project/unit_tests/run
+else
+	echo "Unknown executable. valid executables are hourglass, unit_test"
+fi
+if [ $# != 1 ]; then
+	echo "Illegal number of parameter(s)."
+fi
+
