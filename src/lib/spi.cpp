@@ -12,10 +12,11 @@
 #include "spi.hpp"
 
 /*!
-	\author jippe
-	\date 01/07/19
 	\file spi.cpp
- */
+	\author jippe
+	\date 30/06/19
+	\brief
+*/
 
 spi::bus::bus(hwlib::pin_out &clk, hwlib::pin_out &mosi, hwlib::pin_out &cs) :
 	clk(hwlib::direct(clk)),

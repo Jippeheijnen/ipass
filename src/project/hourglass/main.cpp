@@ -100,8 +100,8 @@ public:
 
 
 
-void hourGlass(matrix::HT_1632 &matrix, uint16_t h, uint16_t m, uint16_t s) {
-	auto time = (h*3600)+(m*60)+s;
+void hourGlass(matrix::HT_1632 &matrix, uint8_t m) {
+	auto time = (m*60);
 
 	auto w = matrix::matrixWindow(16, 24, matrix);
 
@@ -162,7 +162,6 @@ void hourGlass(matrix::HT_1632 &matrix, uint16_t h, uint16_t m, uint16_t s) {
 		hwlib::wait_ms(250);
 		if (!done) {
 			if (counter>=7*(time/7)) {
-				hwlib::cout << "7/7" << '\n';
 				l6.location=hwlib::xy(7, 15);
 				l6.end=hwlib::xy(9, 15);
 				l5.location=hwlib::xy(6, 16);
@@ -185,7 +184,6 @@ void hourGlass(matrix::HT_1632 &matrix, uint16_t h, uint16_t m, uint16_t s) {
 				}
 				break;break;
 			} else if (counter>=6*(time/7)) {
-				hwlib::cout << "6/7" << '\n';
 				l5.location=hwlib::xy(7, 16);
 				l5.end=hwlib::xy(9, 16);
 				l4.location=hwlib::xy(6, 17);
@@ -200,7 +198,6 @@ void hourGlass(matrix::HT_1632 &matrix, uint16_t h, uint16_t m, uint16_t s) {
 				l0.end=hwlib::xy(14, 21);
 				notSand = true;
 			} else if (counter>=5*(time/7)) {
-				hwlib::cout << "5/7" << '\n';
 				l4.location=hwlib::xy(7, 17);
 				l4.end=hwlib::xy(9, 17);
 				l3.location=hwlib::xy(6, 18);
@@ -212,7 +209,6 @@ void hourGlass(matrix::HT_1632 &matrix, uint16_t h, uint16_t m, uint16_t s) {
 				l0.location=hwlib::xy(3, 21);
 				l0.end=hwlib::xy(13, 21);
 			} else if (counter>=4*(time/7)) {
-				hwlib::cout << "4/7" << '\n';
 				l3.location=hwlib::xy(7, 18);
 				l3.end=hwlib::xy(9, 18);
 				l2.location=hwlib::xy(6, 19);
@@ -222,7 +218,6 @@ void hourGlass(matrix::HT_1632 &matrix, uint16_t h, uint16_t m, uint16_t s) {
 				l0.location=hwlib::xy(4, 21);
 				l0.end=hwlib::xy(12, 21);
 			} else if (counter>=3*(time/7)) {
-				hwlib::cout << "3/7" << '\n';
 				l2.location=hwlib::xy(7, 19);
 				l2.end=hwlib::xy(9, 19);
 				l1.location=hwlib::xy(6, 20);
@@ -230,13 +225,11 @@ void hourGlass(matrix::HT_1632 &matrix, uint16_t h, uint16_t m, uint16_t s) {
 				l0.location=hwlib::xy(5, 21);
 				l0.end=hwlib::xy(11, 21);
 			} else if (counter>=2*(time/7)) {
-				hwlib::cout << "2/7" << '\n';
 				l1.location=hwlib::xy(7, 20);
 				l1.end=hwlib::xy(9, 20);
 				l0.location=hwlib::xy(6, 21);
 				l0.end=hwlib::xy(10, 21);
 			} else if (counter>=(time/7)) {
-				hwlib::cout << "1/7" << '\n';
 				l0.location=hwlib::xy(7, 21);
 				l0.end=hwlib::xy(9, 21);
 			}
@@ -251,13 +244,10 @@ void hourGlass(matrix::HT_1632 &matrix, uint16_t h, uint16_t m, uint16_t s) {
 				w.flush();
 				hwlib::wait_ms(250);
 			}
-			if (done)
-				break;
+			break;
+			
 		}
 	}
-	matrix.blink(5);
-	hwlib::cout << "done";
-
 }
 
 // ===========================================================================
@@ -269,14 +259,91 @@ int main(){
 	auto cs = hwlib::target::pin_out(hwlib::target::pins::d8);
 	auto spi_bus = spi::bus(wr, dat, cs);
 	auto m = HT_1632(spi_bus, matrix::commands::HT1632_COMMON_16NMOS);
-
 	m.setBrightness(0xf);
 	hwlib::wait_ms(500);
 
 	auto win = matrix::matrixWindow(16, 24, m);
-	hourGlass(m, 0, 0, 15);
+	auto winvert = hwlib::window_invert(win);
+	auto winpart_0 = hwlib::window_part(winvert, hwlib::xy(0,0), hwlib::xy(8,8));
+	auto winpart_1 = hwlib::window_part(winvert, hwlib::xy(8,0), hwlib::xy(8,8));
+	auto winpart_2 = hwlib::window_part(winvert, hwlib::xy(0,8), hwlib::xy(8,8));
+	auto winpart_3 = hwlib::window_part(winvert, hwlib::xy(8,8), hwlib::xy(8,8));
+	auto winpart0 = hwlib::window_part(winvert, hwlib::xy(0,16), hwlib::xy(8,8));
+	auto winpart1 = hwlib::window_part(winvert, hwlib::xy(8,16), hwlib::xy(8,8));
 
+	auto menubutton = hwlib::target::pin_in(hwlib::target::pins::d52);
+	auto plusbutton = hwlib::target::pin_in(hwlib::target::pins::d50);
+	auto minusbutton = hwlib::target::pin_in(hwlib::target::pins::d48);
+	
+	
+	bool menu = true;
+	bool blink = false;
+	int minutes=0;
 
+	for (;;) {
+		while (!menu)  {
+			hourGlass(m, minutes);
+			blink = true;
+			break;
+		}
+		if (blink) {
+			while (!menubutton.read()) {
+				menubutton.refresh();
+				hwlib::wait_ms(500);
+				m.blink(1);
+			}
+			if (menubutton.read()) {
+				while (menubutton.read()) {
+					blink = false;
+					menu = true;
+					menubutton.refresh();
+					hwlib::wait_ms(500);
+				}
+				
+			}
+			
+		}
+		while (menu) {
+			for (int i=0;i<=100;i++) {
+				win.clear();
+				winpart_0.write(hwlib::xy(0,0), hwlib::font_default_8x8()['t']);
+				winpart_1.write(hwlib::xy(0,0), hwlib::font_default_8x8()['i']);
+				winpart_2.write(hwlib::xy(0,0), hwlib::font_default_8x8()['m']);
+				winpart_3.write(hwlib::xy(0,0), hwlib::font_default_8x8()['e']);
+				win.flush();
+				if (plusbutton.read()) {
+					if (minutes < 98)
+						minutes++;
+					while (plusbutton.read()) {
+						plusbutton.refresh();
+						hwlib::wait_ms(50);
+					}
+				}
+				if (minusbutton.read()) {
+					if (minutes > 1)
+						minutes--;
+					while (minusbutton.read()) {
+						minusbutton.refresh();
+						hwlib::wait_ms(50);
+					}
+				}
+				winpart0.write(hwlib::xy(0,0), hwlib::font_default_8x8()[0x30+(minutes/10)]);
+				winpart1.write(hwlib::xy(0,0), hwlib::font_default_8x8()[0x30+(minutes%10)]);
+				win.flush();
+				hwlib::wait_ms(50);
+				if (menubutton.read()) {
+						blink = false;
+						menu = false;
+					while (menubutton.read()) {
+						menubutton.refresh();
+						hwlib::wait_ms(50);
+					}
+					break;
+				}
+				menubutton.refresh();
+			}
+		}
+	}
 }
 
 

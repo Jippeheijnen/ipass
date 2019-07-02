@@ -14,8 +14,9 @@
 
 
 /*!
-	\file matrixLib.cpp
+	\file matrixLib.hpp
 	\brief This file contains Library classes.
+	 * 
 	 * I have created a library which suoports a matrix of LEDs
 	 * with a size of 16x24, controlled by a HT1632 chip.
 */
@@ -32,10 +33,10 @@ namespace matrix {
 
 
 	/*!
-		\class commands
 		\author jippe
-		\date 01/07/19
+		\class commands
 		\brief matrix::commands
+		 * 
 		 * These command codes are used to initiate the matrix so that the HT1632
 		 * chip knows what it needs to do and what it's task is.
 	 */
@@ -76,9 +77,8 @@ static constexpr const uint8_t HT1632_WRITE			= 0x05;
 
 /*!
 	\class HT_1632
-	\author jippe
-	\date 01/07/19
 	\brief matrix::HT_1632
+	 * 
 	 * This is the library part of my iPass project. The matrix is 16 x 32 in size,
 	 * and it is controlled by an HT1632 chip. This chip works with spi so thats why
 	 * I created a spi implementation as well.
@@ -98,13 +98,16 @@ spi::bus spi_bus;
 uint16_t type;
 
 /*!
-	\brief cendCommand function.
+	\brief sendCommand function.
+	 * 
 	 * This function is quite simple, and it is only used internally in the background.
+	 * 
 	 * It does the following:
 	 * 		- Create a temporary spi transaction using the bus reference member variable.
-	 * 		- put the matrix::commands::HT_1632_command code in first 3 bits.
+	 * 		- Put the matrix::commands::HT_1632_command code in first 3 bits.
 	 * 		- OR (the bit operator) the actual command in the following, and remaining 9 bits.
 	 * 		- transmit the 12 bit sequence to the HT1632 chip.
+	 * 
  * 	@param cmd this is the matrix::commands command-code that needs to be sent.
 */
 
@@ -112,15 +115,18 @@ void sendCommand(uint16_t cmd);
 
 /*!
 	\brief WriteRam function.
+	 * 
 	 * The writeRam function writes data to the ram register directly.
-	 * How it works:
-	 * 	The complete transaction has a total of 14 bits,
-	 * 	they are arranged as following:
+	 * 
+	 * This is how it works.
+	 * The complete transaction has a total of 14 bits, they are arranged as following:
 	 * 		- 3 bits matrix::commands::HT_1632_WRITE command.
 	 * 		- 7 address bits. This is the register address on the HT1632 chip.
 	 * 		- 4 data bits.
-	 *	When the data is in the correct order,
+	 * 
+	 * When the data is in the correct order,
 	 * it is sent using a single spi transaction.
+	 * 
  * @param addr The 7 bit register address.
  * @param data The 4 bit data, these bits are linked directly to  the LEDs.
  * If you enter 1000 (8 in decimal) as data, the first bit will be enabled.
@@ -130,6 +136,7 @@ void writeRam(uint8_t addr, uint8_t data);
 
 /*!
 	\brief DumpMem function.
+	 * 
 	 * This function loops over the internal memory buffer and clears it.
 	 * If the 'debug' define is set to true in the header file, the function 
 	 * shows the previous bitvalues stored in the buffer before clearing it.
@@ -145,6 +152,7 @@ public:
 
 /*!
 	\brief The constructor.
+	 * 
 	 * This is the constructor of my library, 
 	
  * @param spi_bus this is the spi::bus in which the pins are stored.
@@ -163,6 +171,7 @@ HT_1632(spi::bus spi_bus, uint16_t type);
 
 /*!
 	\brief SetPixel function.
+	 * 
 	 * The setPixel function is quite self-explanatory,
 	 * it sets pixels at location x, y.
  * @param x The pixel's x location, from 0 to 15.
@@ -173,6 +182,7 @@ void setPixel(uint16_t x, uint16_t y);
 
 /*!
 	\brief ClearPixel function.
+	 * 
 	 * The reverse of the setPixel function.
  * @param x The pixel's x location, from 0 to 15.
  * @param y The pixel's y locatino, from 0 to 23
@@ -182,6 +192,7 @@ void clearPixel(uint16_t x, uint16_t y);
 
 /*!
 	\brief Blink function.
+	 * 
 	 * This function lets you blink the whole matrix
 	 * for x amount of seconds.
 	
@@ -192,6 +203,7 @@ void blink(uint16_t seconds);
 
 /*!
 	\brief WriteScreen function.
+	 * 
 	 * WriteScreen is similar to hwlib::window::flush(),
 	 * what it does is send the data stored in the memory buffer to the HT1632
 	 * chip.
@@ -214,6 +226,7 @@ void writeScreen();
 
 /*!
 	\brief SetBrightness function.
+	 * 
 	 * With the setBrightness function, the user can adjust the brightness of the whole matrix.
 	 * This works with a PWM signal which is sent using the the matrix::HT_1632_PWM_CONTROL command.
  * @param b This is the brightness value.
@@ -229,9 +242,8 @@ void setBrightness(uint8_t b);
 
 /*!
 	\class matrixWindow
-	\author jippe
-	\date 01/07/19
 	\brief matrix::matrixWindow
+	 * 
 	 * This class is a way to use my matrices as hwlib::window's.
 	 * The cool part about this is that you can use a matrixWindow to draw hwlib::drawable's.
 	 * Apart from the constructor, I won't go into depth how the class works because it basically
@@ -253,6 +265,7 @@ class matrixWindow : public hwlib::window {
 
 	/*!
 		\brief The constructor.
+		 * 
 		 * The constructor requires a width and height to know how large
 		 * the quote unquote window is. The HT_1632 reference is self explanatory.
 		 * (without a matrix reference this class couldn't change pixels on it even if it

@@ -11,6 +11,13 @@
 
 #include "hwlib.hpp"
 
+/*!
+	\file spi.hpp
+	\author jippe
+	\date 30/06/19
+	\brief
+*/
+
 namespace spi {
 
 	/*!
@@ -22,8 +29,8 @@ namespace spi {
 		\class bus
 		\author jippe
 		\date 30/06/19
-		\file spi.cpp
 		\brief This is my SPI bus implementation.
+		 * 
 		 * Other than hwlib this class uses the cs pin as well.
 		 * The MISO pin, since no reading is required, is left out.
 	*/
@@ -39,6 +46,7 @@ namespace spi {
 		//! 
 		/*!
 			\brief The bus constructor.
+			 * 
 			 * This is the constructor for the spi bus class.
 			 * All params should contain hwlib::target::pin_out's.
 			@param clk This is the (write) clock pin.
@@ -51,9 +59,8 @@ namespace spi {
 
 	/*!
 		\class transaction
-		\author jippe
-		\date 30/06/19
 		\brief SPI transaction class.
+		 * 
 		 * This class creates a transaction from a spi::bus.
 		 * In the constructor the CS pin is set to high,
 		 * and in the destructor the CS pin is set to low to mark the end
@@ -71,6 +78,7 @@ namespace spi {
 
 		/*!
 			\brief The constructor.
+			 * 
 			 * This is the constructor in which the CS pin is set to high.
 			 * The transaction starts here.
 			
@@ -82,7 +90,7 @@ namespace spi {
 		/*!
 			\brief WriteData is the function that actually sends data to the receiving chip.
 			 * 
-			
+			 * 
 		 * @param bits This is a uint8_t number that indicates how many bits are being sent.
 		 * @param d The data to send, MSBT, (Most Significant Bit First).
 		 */
@@ -91,6 +99,7 @@ namespace spi {
 
 		/*!
 			\brief The destructor.
+			 * 
 			 * This is the destructor in which the CS pin is set to low.
 			 * The transaction ends here.
 			

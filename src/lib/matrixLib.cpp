@@ -91,17 +91,17 @@ void matrix::HT_1632::clearPixel(uint16_t x, uint16_t y) {
 }
 
 void matrix::HT_1632::blink(uint16_t seconds) {
-	for (int i=0; i<=2*seconds; i++) {
+	for (int i=0; i<=seconds; i++) {
 		for (int i=0;i<24;i++) {
 			ledmatrix[i]=0xFFFF;
 		}
 		writeScreen();
-		hwlib::wait_ms(250);
+		hwlib::wait_ms(125);
 		for (int i=0;i<24;i++) {
 			ledmatrix[i]=0;
 		}
 		writeScreen();
-		hwlib::wait_ms(250);
+		hwlib::wait_ms(125);
 	}
 }
 
@@ -126,7 +126,8 @@ matrix::matrixWindow::matrixWindow(int x, int y, matrix::HT_1632 &matrix) :
 	{}
 	
 void matrix::matrixWindow::write_implementation(hwlib::xy pos, hwlib::color col) {
-	matrix.setPixel(pos.x, pos.y);
+	if (col != hwlib::black)
+		matrix.setPixel(pos.x, pos.y);
 }
 
 void matrix::matrixWindow::flush() {
