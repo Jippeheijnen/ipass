@@ -7,9 +7,7 @@ This is the github page for the library and implementation I built this year as 
 
 Dependencies
 -----
-For abstraction of communication with microcontrollers, this library uses [hwlib](http://github.com/wovo/hwlib) for it's hardware specific pins and wait functions.
-
-The included makefile is built for [BMPTK](http://github.com/wovo/bmptk).
+For abstraction of communication with microcontrollers, this library uses [hwlib](http://github.com/wovo/hwlib) for it's hardware specific pins and wait functions. The included makefile is built for [BMPTK](http://github.com/wovo/bmptk).
 
 Installation
 -----
