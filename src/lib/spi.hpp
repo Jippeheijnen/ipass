@@ -57,6 +57,18 @@ namespace spi {
 		bus(hwlib::pin_out &clk, hwlib::pin_out &mosi, hwlib::pin_out &cs);
 	};  // end of bus class.
 
+//	class bus_dummy {
+//	private:
+//		bool clk, mosi, cs;
+//		friend class transaction_dummy;
+//
+//	public:
+//		bus_dummy() : 
+//			clk(0), mosi(0), cs(0)
+//			{}
+//		
+//	};
+
 	/*!
 		\class transaction
 		\brief SPI transaction class.
@@ -108,6 +120,30 @@ namespace spi {
 		~transaction();
 
 	};  // end of transaction class.
+
+//	class transaction_dummy {
+//	private:
+//		std::string clock;
+//		std::string data;
+//		std::string chipSelect;
+//		bus_dummy &b;
+//		bool &clk, &mosi, &cs;
+//		friend class bus_dummy;
+//	public:
+//		transaction_dummy(bus_dummy &b) :
+//			b(b), clk(b.clk), mosi(b.mosi), cs(b.cs)
+//			{cs}
+//		std::string writeData(uint8_t bits, uint16_t d) {
+//			for (uint16_t bit = 1<<(bits-1); bit; bit >>= 1) {
+//				
+//				clock += "0";
+//				data += (string)(d & bit) ? 1 : 0);
+//				clock += "1";
+//			}
+//			std::string output = clock += '\n' += data += '\n' += chipSelect;
+//			return output;
+//		}
+//	};
 
 	/*! @} End of Doxygen Groups*/
 

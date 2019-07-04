@@ -6,4 +6,10 @@
       <Project Name="hourglass" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
+  <Project Name="unit_tests" Path="unit_tests/_codelite.project" Active="No"/>
+  <BuildMatrix>
+    <WorkspaceConfiguration Name="Release" Selected="yes">
+      <Project Name="unit_tests" ConfigName="Release"/>
+    </WorkspaceConfiguration>
+  </BuildMatrix>
 </CodeLite_Workspace>

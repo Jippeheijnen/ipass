@@ -30,7 +30,6 @@
   <Dependencies/>
   <VirtualDirectory Name="source">
     <File Name="main.cpp"/>
-    <File Name="hourglass.hpp"/>
     <File Name="Makefile"/>
   </VirtualDirectory>
   <Settings Type="Dynamic Library">
