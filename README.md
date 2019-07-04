@@ -15,6 +15,9 @@ Installation
 -----
 - Download the library `git clone http://github.com/jippeheijnen/ipass`
 - Include Makefile.inc from your project
+- When building the project's implementation, you should be able to just type
+  `./runipass hourglass`
+  - Note that bmptk is actually required for this to work.
 
 Building with BMPTK
 ----
