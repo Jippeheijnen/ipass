@@ -13,23 +13,16 @@ The included makefile is built for [BMPTK](http://github.com/wovo/bmptk).
 
 Installation
 -----
-- Download the library `git clone http://github.com/jippeheijnen/ipass`
+- Download the library `cd ~; git clone http://github.com/jippeheijnen/ipass`
 - Include Makefile.inc from your project
+- Make sure that both [hwlib](http://github.com/wovo/hwlib) and [BMPTK](http://github.com/wovo/bmptk) are installed in the home 
+  directory.
+  
+ 
+Building the implementation
+----
 - When building the project's implementation, you should be able to just type
   `./runipass hourglass`
-  - Note that bmptk is actually required for this to work.
-
-Building with BMPTK
-----
-- Make sure to set the TARGET before including *Makefile.inc*
-- Include *Makefile.inc*
-
-
-Building without BMPTK
-----
-The included makefile only sets some variables, but doesn't do any compiling itself. When building without BMPTK, some variables should be interpreted properly after including.
-- HEADERS: all .hpp header files
-- SOURCES: all .cpp source files
-- SEARCH: theinclude path for header files of this library 
-
-
+  - Note that hwlib and bmptk are actually required for this to work.
+  - The run script will try to build and upload the project automatically.
+  
