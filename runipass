@@ -1,18 +1,37 @@
 #! /usr/bin/env bash
 
-if [ "$1" == "hourglass" ]; then
-	echo "running hourglass..."
-	~/iPass/src/project/hourglass/run
+if cd ~/hwlib; then
+	echo "hwlib is present."
 else
-	echo "Unknown executable. valid executables are hourglass, unit_test"
+	echo "pulling hwlib"
+	cd ~
+	git clone https://github.com/wovo/hwlib
 fi
-if [ "$1" == "unit_test" ]; then
-	echo "running unit tests..."
-	~/iPass/src/project/unit_tests/run
+if cd ~/bmptk; then
+	echo "bmptk is present."
 else
-	echo "Unknown executable. valid executables are hourglass, unit_test"
+	echo "pulling bmptk"
+	cd ~
+	git clone https://github.com/wovo/bmptk
 fi
 if [ $# != 1 ]; then
-	echo "Illegal number of parameter(s)."
+        echo "Illegal number of parameter(s)."
+else
+	if [ "$1" == "hourglass" ]; then
+		echo "running hourglass..."
+		~/iPass/src/project/hourglass/run
+	else
+		if [ "$1" == "unit_test" ]; then
+			echo "running unit_test..."
+			~/iPass/src/project/unit_tests/run
+		else
+			if [ "$1" == "demo" ]; then
+				echo "running demo"
+				~/iPass/src/main/run
+			else
+				echo "Unknown executable. valid executables are demo, hourglass, unit_test"
+			fi
+		fi
+	fi
 fi
 

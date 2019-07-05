@@ -45,4 +45,8 @@
 /run.save
 /src/main/makefile
 /Doxygen
-
+*.project
+*.workspace
+*/.clang
+*/.codelite
+*/update_codelite_workspace.bat

@@ -9,10 +9,10 @@
 #############################################################################
 
 # source files in this project (main.cpp is automatically assumed)
-SOURCES := 
+SOURCES := spi.cpp matrixLib.cpp
 
 # header files in this project
-HEADERS := 
+HEADERS := spi.hpp matrixLib.hpp
 
 # other places to look for files for this project
 SEARCH  := ../../lib

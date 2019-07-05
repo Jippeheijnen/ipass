@@ -15,10 +15,6 @@ else
    TI-SOFTWARE       := $(HOME)
 endif   
 
-# add Catch
-SEARCH            += $(TI-SOFTWARE)/Catch2/single_include
-SEARCH            += $(TI-SOFTWARE)/Catch2/single_include/catch2
-
 # include hwlib
 HWLIB             ?= $(TI-SOFTWARE)/hwlib
 include           $(HWLIB)/makefile.inc

@@ -35,10 +35,7 @@ matrix::HT_1632::HT_1632(spi::bus spi_bus,
 		for (int i=0;i<24;i++) {
 			ledmatrix[i]=0;
 		}
-
-		for (int i=0; i<24*4; i++) {
-			writeRam(i, 0x00);
-		}
+		writeScreen();
 	}
 
 void matrix::HT_1632::sendCommand(uint16_t cmd){
@@ -113,7 +110,6 @@ void matrix::HT_1632::writeScreen() {
 	for(uint16_t i=0; i<24; i++) {
 		spi_transaction.writeData(16, ledmatrix[i]);
 	}
-	spi_transaction.~transaction();
 }
 
 void matrix::HT_1632::setBrightness(uint8_t b) {

@@ -25,12 +25,10 @@ public:
 	hwlib::xy location;
 	hwlib::xy size;
 
-	hwlib::xy bounce;
-	drawable( hwlib::window & w, const hwlib::xy & location, const hwlib::xy & size, const hwlib::xy bounce ):
+	drawable( hwlib::window & w, const hwlib::xy & location, const hwlib::xy & size ):
 		w( w ),
 		location( location ),
-		size( size ),
-		bounce( bounce )
+		size( size )
 	{}
 
 	virtual void draw() = 0;
@@ -82,10 +80,9 @@ class line : public drawable {
 private:
 public:
 	hwlib::xy end;
-	hwlib::xy bounce;
 
-	line( hwlib::window & w, const hwlib::xy & location, const hwlib::xy & end, const hwlib::xy &bounce  = hwlib::xy(-1,-1)):
-		drawable( w, location, end - location, bounce ),
+	line( hwlib::window & w, const hwlib::xy & location, const hwlib::xy & end):
+		drawable( w, location, end - location ),
 		end( end )
 	{}
 
@@ -310,27 +307,46 @@ int main(){
 				winpart_1.write(hwlib::xy(0,0), hwlib::font_default_8x8()['i']);
 				winpart_2.write(hwlib::xy(0,0), hwlib::font_default_8x8()['m']);
 				winpart_3.write(hwlib::xy(0,0), hwlib::font_default_8x8()['e']);
-				win.flush();
-				if (plusbutton.read()) {
-					if (minutes < 98)
-						minutes++;
-					while (plusbutton.read()) {
-						plusbutton.refresh();
-						hwlib::wait_ms(50);
-					}
-				}
-				if (minusbutton.read()) {
-					if (minutes > 1)
-						minutes--;
-					while (minusbutton.read()) {
-						minusbutton.refresh();
-						hwlib::wait_ms(50);
-					}
-				}
 				winpart0.write(hwlib::xy(0,0), hwlib::font_default_8x8()[0x30+(minutes/10)]);
 				winpart1.write(hwlib::xy(0,0), hwlib::font_default_8x8()[0x30+(minutes%10)]);
 				win.flush();
 				hwlib::wait_ms(50);
+				if (plusbutton.read()) {
+					while (plusbutton.read()) {
+						win.clear();
+						winpart_0.write(hwlib::xy(0,0), hwlib::font_default_8x8()['t']);
+						winpart_1.write(hwlib::xy(0,0), hwlib::font_default_8x8()['i']);
+						winpart_2.write(hwlib::xy(0,0), hwlib::font_default_8x8()['m']);
+						winpart_3.write(hwlib::xy(0,0), hwlib::font_default_8x8()['e']);
+						winpart0.write(hwlib::xy(0,0), hwlib::font_default_8x8()[0x30+(minutes/10)]);
+						winpart1.write(hwlib::xy(0,0), hwlib::font_default_8x8()[0x30+(minutes%10)]);
+						win.flush();
+						plusbutton.refresh();
+						if (minutes == 99)
+							minutes = 0;
+						hwlib::wait_ms(200);
+						if (minutes < 99)
+							minutes++;
+					}
+				}
+				if (minusbutton.read()) {
+					while (minusbutton.read()) {
+						win.clear();
+						winpart_0.write(hwlib::xy(0,0), hwlib::font_default_8x8()['t']);
+						winpart_1.write(hwlib::xy(0,0), hwlib::font_default_8x8()['i']);
+						winpart_2.write(hwlib::xy(0,0), hwlib::font_default_8x8()['m']);
+						winpart_3.write(hwlib::xy(0,0), hwlib::font_default_8x8()['e']);
+						winpart0.write(hwlib::xy(0,0), hwlib::font_default_8x8()[0x30+(minutes/10)]);
+						winpart1.write(hwlib::xy(0,0), hwlib::font_default_8x8()[0x30+(minutes%10)]);
+						win.flush();
+						minusbutton.refresh();
+						hwlib::wait_ms(200);
+						if (minutes == 0)
+							minutes = 99;
+						if (minutes > 0)
+							minutes--;
+					}
+				}
 				if (menubutton.read()) {
 						blink = false;
 						menu = false;

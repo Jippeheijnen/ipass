@@ -280,7 +280,7 @@ class matrixWindow : public hwlib::window {
 	
 	void write_implementation(hwlib::xy pos, hwlib::color col) override;
 	void flush() override;
-	void clear();
+	void clear() override;
 
 /*! @} End of Doxygen Groups*/
 

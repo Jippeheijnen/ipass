@@ -95,7 +95,7 @@ namespace spi {
 		 * @param d The data to send, MSBT, (Most Significant Bit First).
 		 */
 
-		void writeData(uint8_t bits, uint16_t d);
+		virtual void writeData(uint8_t bits, uint16_t d);
 
 		/*!
 			\brief The destructor.
@@ -108,6 +108,22 @@ namespace spi {
 		~transaction();
 
 	};  // end of transaction class.
+
+	class test_transaction : public transaction {
+	public:
+		bool &test;
+		uint8_t size_array[10] = {0};
+		uint16_t data_array[10] = {0};
+		int8_t transaction_amount = 0;
+		test_transaction(spi::bus &b, bool &test):
+			transaction(b), test(test) {
+				this->test = true;
+			}
+		void writeData(uint8_t bits, uint16_t d) override;
+		~test_transaction() {
+				this->test = false;
+		}
+	};
 
 	/*! @} End of Doxygen Groups*/
 

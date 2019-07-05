@@ -1,0 +1,34 @@
+
+##############################################################
+#                 (c) Jippe Heijnen 2019                     #
+#                                                            #
+#   Distributed under the Boost Software License v1.0.       #
+#   (See accompanying file LICENSE_1_0.txt or copy at        #
+#          https://www.boost.org/LICENSE_1_0.txt)            #
+##############################################################
+
+#! /usr/bin/env bash
+
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+	echo "Linux detected, continuing";
+fi
+
+cd ~/iPass/src/main/
+make clean>/dev/null
+make build
+
+if cat /proc/version | grep "Microsoft"; then
+	echo "!WSL DETECTED!";
+	cmd.exe /c @mode com5:1200
+	DEVICE=ttyS5
+	sudo bossac -p $DEVICE -U false -e -w -b main.bin -R || sudo bossac -p ttyACM1 -U false -e -w -b main.bin -R
+	make clean
+
+else
+
+	DEVICE=ttyACM0
+	sudo stty -F /dev/$DEVICE speed 1200 cs8 -cstopb -parenb || sudo stty -F /dev/ttyACM1 speed 1200 cs8 -cstopb -parenb 
+	sudo bossac -p $DEVICE -U false -e -w -v -b main.bin -R || sudo bossac -p ttyACM1 -U false -e -w -v -b main.bin -R
+	make clean>/dev/null
+fi
+

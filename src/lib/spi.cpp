@@ -41,3 +41,9 @@ void spi::transaction::writeData(uint8_t bits, uint16_t d) {
 spi::transaction::~transaction() {
 	cs.write(1);  // end of transmission
 }
+
+void spi::test_transaction::writeData(uint8_t bits, uint16_t d) {
+			size_array[transaction_amount] = bits;
+			data_array[transaction_amount] = d;
+			transaction_amount++;
+}
