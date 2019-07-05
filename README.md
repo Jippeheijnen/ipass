@@ -12,7 +12,7 @@ For abstraction of communication with microcontrollers, this library uses [hwlib
 Installation
 -----
 - run `cd ~; git clone htpps://github.com/wovo/installers` to install a batch file for all the software you need.
-- run `cd ~/installers; chmod 777 ubuntu1; ./ubuntu1` to install the software packages.
+- run `cd ~/installers; chmod 777 ubuntu1;sudo ./ubuntu1` to install the software packages.
 - Download the library `cd ~; git clone http://github.com/jippeheijnen/ipass`
 - Now you are ready to run the project. Make sure you have an Arduino due connected to the computer.
 ```
