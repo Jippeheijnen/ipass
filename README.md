@@ -23,6 +23,7 @@ in the makefiles in the/src/main and the /src/project folders.
 
 Building the implementation
 ----
+- For the following command you need to be in the iPass directory, `cd ~/iPass/`.
 - When building the project's implementation, you should be able to just type
   `./runipass` with `hourglass`, `demo`, or `unit_test ` as argument.
   - Note that hwlib and bmptk are automatically installed into the home directory if not present.
