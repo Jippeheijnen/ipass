@@ -21,7 +21,7 @@
 	 * with a size of 16x24, controlled by a HT1632 chip.
 */
 
-#include "hwlib.hpp"
+#include <hwlib.hpp>
 #include "spi.hpp"
 
 namespace matrix {
@@ -91,7 +91,7 @@ class HT_1632 {
 	@{
 */
 
-protected:
+public:
 //! \brief This array is the memory-buffer to store data temporarily before it gets written.
 uint16_t ledmatrix[24] = {0};
 spi::bus spi_bus;
@@ -146,7 +146,6 @@ void writeRam(uint8_t addr, uint8_t data);
  */
 
 void dumpMem();
-friend class matrixWindow;
 
 public:
 
@@ -239,52 +238,6 @@ void setBrightness(uint8_t b);
 /*! @} End of Doxygen Groups*/
 
 };  // end of HT_1632 class.
-
-/*!
-	\class matrixWindow
-	\brief matrix::matrixWindow
-	 * 
-	 * This class is a way to use my matrices as hwlib::window's.
-	 * The cool part about this is that you can use a matrixWindow to draw hwlib::drawable's.
-	 * Apart from the constructor, I won't go into depth how the class works because it basically
-	 * is a hwlib::window. The functions are mostly self-explanatory.
- */
-
-class matrixWindow : public hwlib::window {
-
-/*!
-	\addtogroup matrixWindow
-	@{
-*/
-
-	private:
-
-	HT_1632 &matrix;
-
-	public:
-
-	/*!
-		\brief The constructor.
-		 * 
-		 * The constructor requires a width and height to know how large
-		 * the quote unquote window is. The HT_1632 reference is self explanatory.
-		 * (without a matrix reference this class couldn't change pixels on it even if it
-		 * wanted to).
-		
-	 * @param x The width in pixels. (my matrix was 16px wide)
-	 * @param y The height in pixels. (my matrix was 24px in height)
-	 * @param matrix The matrix object (obviously)
-	 */
-
-	matrixWindow(int x, int y, HT_1632 &matrix);
-	
-	void write_implementation(hwlib::xy pos, hwlib::color col) override;
-	void flush() override;
-	void clear() override;
-
-/*! @} End of Doxygen Groups*/
-
-};  // end of class matrixWindow
 
 	/*! @} End of Doxygen Groups*/
 

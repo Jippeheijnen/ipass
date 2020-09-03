@@ -116,21 +116,21 @@ void matrix::HT_1632::setBrightness(uint8_t b) {
 	sendCommand(commands::HT1632_PWM_CONTROL | b);
 }
 
-matrix::matrixWindow::matrixWindow(int x, int y, matrix::HT_1632 &matrix) :
-	hwlib::window(hwlib::xy(x,y)),
-	matrix(matrix)
-	{}
+// matrix::matrixWindow::matrixWindow(int x, int y, matrix::HT_1632 &matrix) :
+// 	hwlib::window(hwlib::xy(x,y)),
+// 	matrix(matrix)
+// 	{}
 	
-void matrix::matrixWindow::write_implementation(hwlib::xy pos, hwlib::color col) {
-	if (col != hwlib::black)
-		matrix.setPixel(pos.x, pos.y);
-}
+// void matrix::matrixWindow::write_implementation(hwlib::xy pos, hwlib::color col) {
+// 	if (col != hwlib::black)
+// 		matrix.setPixel(pos.x, pos.y);
+// }
 
-void matrix::matrixWindow::flush() {
-	matrix.writeScreen();
-}
+// void matrix::matrixWindow::flush() {
+// 	matrix.writeScreen();
+// }
 
-void matrix::matrixWindow::clear()  {
-	matrix.dumpMem();
-	matrix.writeScreen();
-}
+// void matrix::matrixWindow::clear()  {
+// 	matrix.dumpMem();
+// 	matrix.writeScreen();
+// }
