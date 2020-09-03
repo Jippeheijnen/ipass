@@ -50,3 +50,6 @@
 */.clang
 */.codelite
 */update_codelite_workspace.bat
+/.*
+Makefile*
+
