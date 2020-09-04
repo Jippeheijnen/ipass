@@ -33,39 +33,40 @@ int main(){
 	 * This is a short demo script which can be used to figure out how the HT1632 library works
  */
 
-	auto dat = hwlib::target::pin_out(hwlib::target::pins::d50);
-	auto wr = hwlib::target::pin_out(hwlib::target::pins::d51);
-	auto cs = hwlib::target::pin_out(hwlib::target::pins::d52);
-	auto spi_bus = spi::bus(wr, dat, cs);
+	auto dat = hwlib::target::pin_out(hwlib::target::pins::d30);
+	auto wr = hwlib::target::pin_out(hwlib::target::pins::d31);
+	auto cs1 = hwlib::target::pin_out(hwlib::target::pins::d32);
+	auto cs2 = hwlib::target::pin_out(hwlib::target::pins::d33);
+	auto spi_bus = spi::bus(wr, dat, cs1);
+	auto spi_bus1 = spi::bus(wr, dat, cs2);
 	
+	cs2.write(1);
 	auto m = HT_1632(spi_bus, matrix::commands::HT1632_COMMON_16NMOS);
-	m.setBrightness(0x00);
+	auto m1 = HT_1632(spi_bus1, matrix::commands::HT1632_COMMON_16NMOS);
+	m.setBrightness(0xFF);
+	m1.setBrightness(0xFF);
 	
 	for (;;) {
 		for (int i=0;i<24;i++) {
 			for (int j=0;j<16;j++) {
 				m.setPixel(j,i);
+				m1.clearPixel(j,i);
 				m.writeScreen();
-				hwlib::wait_ms(2);
-			}
-		}
-		
-		for (int i=0;i<24;i++) {
-			for (int j=0;j<16;j++) {
-				m.setPixel(j,i);
+				m1.writeScreen();
+				hwlib::wait_ms(1);
 			}
 		}
 
 		m.writeScreen();
-		hwlib::wait_ms(1000);
 		for (int i=0;i<24;i++) {
 			for (int j=0;j<16;j++) {
 				m.clearPixel(j,i);
+				m1.setPixel(j,i);
 				m.writeScreen();
-				hwlib::wait_ms(2);
+				m1.writeScreen();
+				hwlib::wait_ms(1);
 			}
 		}
-		hwlib::wait_ms(1000);
 	}
 }
 
